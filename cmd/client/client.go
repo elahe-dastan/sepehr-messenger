@@ -2,12 +2,14 @@ package client
 
 import (
 	"alibaba/client"
+	"alibaba/protocol"
 	"bufio"
+	"context"
 	"fmt"
 	"log"
-	"net"
 	"os"
 
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/spf13/cobra"
 )
 
@@ -18,15 +20,20 @@ func Register(rootCmd *cobra.Command) {
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		Run: func(cmd *cobra.Command, args []string) {
-			c, err := net.Dial("tcp", "localhost:1373")
+			//c, err := net.Dial("tcp", "localhost:1373")
+			//
+			//if err != nil {
+			//	log.Println(err)
+			//}
+
+			cli := client.New()
+			id, err := cli.Who(context.Background(), &empty.Empty{})
 
 			if err != nil {
-				log.Println(err)
+				log.Fatal(err)
 			}
-
-			cli := client.New(c)
-
-			go cli.Show()
+			//
+			//go cli.Show()
 
 			consoleReader := bufio.NewReader(os.Stdin)
 
@@ -37,7 +44,29 @@ func Register(rootCmd *cobra.Command) {
 					log.Println(err)
 				}
 
-				cli.Send(text)
+				if text == "show\n" {
+					res, err := cli.Receive(context.Background(), id)
+
+					if err != nil {
+						log.Println(err)
+					}
+
+					for  {
+						m, err := res.Recv()
+
+						if err != nil {
+							break
+						}
+
+						fmt.Println(m)
+					}
+
+				}else {
+					cli.Send(context.Background(), &protocol.Data{
+						Id:                   id,
+						Text:                 text,
+					})
+				}
 			}
 		},
 	},

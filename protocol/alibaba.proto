@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+service SimpleChat {
+    rpc Send(Data) returns (google.protobuf.Empty) {}
+    rpc Receive(ID) returns (stream Data) {}
+    rpc Who(google.protobuf.Empty) returns (ID) {}
+}
+
+message ID {
+    int32 id = 1;
+}
+
+message Data {
+    ID id = 1;
+    string text = 2;
+}
+
+
