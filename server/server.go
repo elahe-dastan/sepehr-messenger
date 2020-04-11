@@ -1,42 +1,27 @@
 package server
 
 import (
-	"bufio"
-	"fmt"
+	"alibaba/client"
 	"log"
 	"net"
 )
 
 type Server struct {
-	conn []net.Conn
-	connReaders chan net.Conn
+	clients []client.Client
+	connReaders chan client.Client
 }
 
 func New() Server {
-	return Server{conn:make([]net.Conn, 0),
-		connReaders:make(chan net.Conn, 100)}
+	return Server{clients:make([]client.Client, 0),
+		connReaders:make(chan client.Client, 100)}
 }
 
-func (s Server) Start()  {
+func (s *Server) Start()  {
 	go s.accept()
 
 	for {
-		fmt.Println("inside")
 		r := <-s.connReaders
-		netData, err := bufio.NewReader(r).ReadString('\n')
-
-		if err != nil {
-			log.Println(err)
-		}
-
-		for _, c := range s.conn {
-			if r != c {
-				w := bufio.NewWriter(c)
-				w.WriteString(netData)
-				w.Flush()
-			}
-		}
-		fmt.Println(netData)
+		go s.Handler(r)
 	}
 }
 
@@ -48,12 +33,27 @@ func (s *Server) accept()  {
 	}
 
 	for {
-		c, erro := l.Accept()
-		if erro != nil {
+		c, err := l.Accept()
+		if err != nil {
 			log.Println(err)
 		}
 
-		s.conn = append(s.conn, c)
-		s.connReaders <- c
+		cli := client.New(c)
+		s.clients = append(s.clients, cli)
+		s.connReaders<- cli
+	}
+}
+
+func (s *Server) Handler(r client.Client)  {
+	netData, err := r.Reader.ReadString('\n')
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	for _, cli := range s.clients {
+		if r != cli {
+			cli.Send(netData)
+		}
 	}
 }

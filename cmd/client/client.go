@@ -28,24 +28,17 @@ func Register(rootCmd *cobra.Command) {
 
 			go cli.Show()
 
+			consoleReader := bufio.NewReader(os.Stdin)
+
 			for {
-				fmt.Println("send")
-				consoleReader := bufio.NewReader(os.Stdin)
 				fmt.Print(" >> ")
-				text, er := consoleReader.ReadString('\n')
-				if er != nil {
-					log.Println(er)
+				text, err := consoleReader.ReadString('\n')
+				if err != nil {
+					log.Println(err)
 				}
 
-				if text == "show\n" {
-					fmt.Println(<-cli.Incoming)
-				}else {
-					fmt.Println(text)
-					cli.Writer.WriteString(text)
-					cli.Writer.Flush()
-				}
+				cli.Send(text)
 			}
-
 		},
 	},
 	)
