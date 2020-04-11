@@ -1,7 +1,6 @@
 package server
 
 import (
-	"alibaba/client"
 	"bufio"
 	"fmt"
 	"log"
@@ -9,39 +8,52 @@ import (
 )
 
 type Server struct {
-	clients []client.Client
-	connReaders []*bufio.Reader
+	conn []net.Conn
+	connReaders chan net.Conn
 }
 
 func New() Server {
-	return Server{clients:make([]client.Client, 0)}
+	return Server{conn:make([]net.Conn, 0),
+		connReaders:make(chan net.Conn, 100)}
 }
 
 func (s Server) Start()  {
+	go s.accept()
+
+	for {
+		fmt.Println("inside")
+		r := <-s.connReaders
+		netData, err := bufio.NewReader(r).ReadString('\n')
+
+		if err != nil {
+			log.Println(err)
+		}
+
+		for _, c := range s.conn {
+			if r != c {
+				w := bufio.NewWriter(c)
+				w.WriteString(netData)
+				w.Flush()
+			}
+		}
+		fmt.Println(netData)
+	}
+}
+
+func (s Server) accept()  {
 	l, err := net.Listen("tcp",":1373")
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	for i := 0 ; i < 2; i++ {
+	for {
 		c, erro := l.Accept()
 		if erro != nil {
 			log.Println(err)
 		}
 
-		s.clients = append(s.clients, client.New(c))
-		s.connReaders = append(s.connReaders, bufio.NewReader(c))
-	}
-
-	for {
-		fmt.Println("inside")
-		netData, err := s.connReaders[0].ReadString('\n')
-
-		if err != nil {
-			log.Println(err)
-		}
-
-		fmt.Println(netData)
+		s.conn = append(s.conn, c)
+		s.connReaders <- c
 	}
 }

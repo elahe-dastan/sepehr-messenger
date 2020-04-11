@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +27,12 @@ func Register(rootCmd *cobra.Command) {
 
 			cli := client.New(c)
 
+			go cli.Show()
+
+			time.Sleep(time.Second * 2)
+
 			for {
+				fmt.Println("send")
 				consoleReader := bufio.NewReader(os.Stdin)
 				fmt.Print(" >> ")
 				text, er := consoleReader.ReadString('\n')
@@ -34,10 +40,15 @@ func Register(rootCmd *cobra.Command) {
 					log.Println(er)
 				}
 
-				fmt.Println(text)
-				cli.Writer.WriteString(text)
-				cli.Writer.Flush()
+				if text == "show\n" {
+					fmt.Println(<- cli.Incoming)
+				}else {
+					fmt.Println(text)
+					cli.Writer.WriteString(text)
+					cli.Writer.Flush()
+				}
 			}
+
 		},
 	},
 	)
