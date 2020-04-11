@@ -40,7 +40,7 @@ func (s Server) Start()  {
 	}
 }
 
-func (s Server) accept()  {
+func (s *Server) accept()  {
 	l, err := net.Listen("tcp",":1373")
 
 	if err != nil {

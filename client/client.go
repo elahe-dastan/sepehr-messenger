@@ -41,7 +41,7 @@ func New(c net.Conn) Client {
 
 func (cli Client) Show()  {
 	for {
-		fmt.Println("show")
+		fmt.Println("inshow")
 		text, err := cli.Reader.ReadString('\n')
 
 		if err != nil {

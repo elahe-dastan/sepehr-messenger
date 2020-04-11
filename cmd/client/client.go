@@ -7,7 +7,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -29,8 +28,6 @@ func Register(rootCmd *cobra.Command) {
 
 			go cli.Show()
 
-			time.Sleep(time.Second * 2)
-
 			for {
 				fmt.Println("send")
 				consoleReader := bufio.NewReader(os.Stdin)
@@ -41,7 +38,7 @@ func Register(rootCmd *cobra.Command) {
 				}
 
 				if text == "show\n" {
-					fmt.Println(<- cli.Incoming)
+					fmt.Println(<-cli.Incoming)
 				}else {
 					fmt.Println(text)
 					cli.Writer.WriteString(text)
