@@ -15,13 +15,13 @@ import (
 )
 
 type ChatServer struct{
-	seq    int32
-	mutex  sync.Mutex
-	queues map[int32]chan protocol.Data
+	Seq    int32
+	Mutex  sync.Mutex
+	Queues map[int32]chan protocol.Data
 }
 
 func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty, error) {
-	for id, ch := range s.queues {
+	for id, ch := range s.Queues {
 		if id == data.Id.Id {
 			continue
 		}
@@ -37,7 +37,7 @@ func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty,
 }
 
 func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) error {
-	messages := s.queues[id.Id]
+	messages := s.Queues[id.Id]
 
 	for {
 		tick := time.Tick(time.Second * 5)
@@ -54,27 +54,28 @@ func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) e
 }
 
 func (s *ChatServer) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-	s.seq++
-	s.queues[s.seq] = make(chan protocol.Data, 100)
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+	s.Seq++
+	s.Queues[s.Seq] = make(chan protocol.Data, 100)
 	return &protocol.ID{
-		Id: s.seq,
+		Id: s.Seq,
 	}, nil
 }
 
-func Start(c config.Config)  {
+func (s *ChatServer) Start(c config.Config) error {
 	l, err := net.Listen("tcp", c.Address)
 
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 
 	grpcServer := grpc.NewServer()
-	protocol.RegisterChatServer(grpcServer, &ChatServer{
-		seq:    0,
-		mutex:  sync.Mutex{},
-		queues: make(map[int32]chan protocol.Data),
-	})
-	grpcServer.Serve(l)
+	protocol.RegisterChatServer(grpcServer, s)
+
+	if err := grpcServer.Serve(l);err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -11,14 +11,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-func New(addr string) protocol.ChatClient {
+func New(addr string) (protocol.ChatClient, error) {
 	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 
-	return protocol.NewChatClient(conn)
+	return protocol.NewChatClient(conn), nil
 }
 
 func Show(cli protocol.ChatClient, id *protocol.ID)  {

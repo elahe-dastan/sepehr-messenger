@@ -20,13 +20,14 @@ func Register(rootCmd *cobra.Command) {
 		Short: "Runs client",
 		Run: func(cmd *cobra.Command, args []string) {
 			addr, err := cmd.Flags().GetString("server")
-			cli := client.New(addr)
+			cli, err := client.New(addr)
 
 			var id *protocol.ID
 			setID, err := cmd.Flags().GetInt32("ID")
 
 			if setID == -1 {
 				id, err = cli.Who(context.Background(), &empty.Empty{})
+				fmt.Println(id.Id)
 			}else {
 				id = &protocol.ID{
 					Id:                   setID,
