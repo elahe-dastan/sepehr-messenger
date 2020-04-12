@@ -40,8 +40,7 @@ func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) e
 	messages := s.queues[id.Id]
 
 	for {
-		tick := time.Tick(time.Second * 10)
-
+		tick := time.Tick(time.Second * 5)
 
 		select {
 		case message := <-messages:

@@ -28,6 +28,8 @@ func Register(rootCmd *cobra.Command) {
 
 			consoleReader := bufio.NewReader(os.Stdin)
 
+			go client.Show(cli, id)
+
 			for {
 				fmt.Print(" >> ")
 				text, err := consoleReader.ReadString('\n')
@@ -35,29 +37,10 @@ func Register(rootCmd *cobra.Command) {
 					log.Println(err)
 				}
 
-				if text == "show\n" {
-					res, err := cli.Receive(context.Background(), id)
-
-					if err != nil {
-						log.Println(err)
-					}
-
-					for  {
-						m, err := res.Recv()
-
-						if err != nil {
-							break
-						}
-
-						fmt.Printf("id:%d > %s",m.Id.Id, m.Text)
-					}
-
-				}else {
-					cli.Send(context.Background(), &protocol.Data{
-						Id:                   id,
-						Text:                 text,
-					})
-				}
+				cli.Send(context.Background(), &protocol.Data{
+					Id:                   id,
+					Text:                 text,
+				})
 			}
 		},
 	}
