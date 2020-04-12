@@ -75,20 +75,23 @@ func TestServer(t *testing.T) {
 	assert.NotEqual(t, fID.Id, tID.Id)
 	assert.NotEqual(t, sID.Id, tID.Id)
 
-	fCli.Send(context.Background(), &protocol.Data{
+	_, err = fCli.Send(context.Background(), &protocol.Data{
 		Id:   fID,
 		Text: "Hello from client one",
 	})
+	assert.NoError(t, err)
 
-	sCli.Send(context.Background(), &protocol.Data{
+	_, err = sCli.Send(context.Background(), &protocol.Data{
 		Id:   sID,
 		Text: "Hello from client two",
 	})
+	assert.NoError(t, err)
 
-	tCli.Send(context.Background(), &protocol.Data{
+	_, err = tCli.Send(context.Background(), &protocol.Data{
 		Id:   tID,
 		Text: "Hello from client three",
 	})
+	assert.NoError(t, err)
 
 	fChannel := s.Queues[fID.Id]
 	data := <-fChannel
