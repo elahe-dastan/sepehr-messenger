@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// nolint: funlen
 func TestServer(t *testing.T) {
 	// starting a server
 	c := config.Read()
