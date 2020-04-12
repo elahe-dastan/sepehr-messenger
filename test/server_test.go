@@ -44,14 +44,17 @@ func TestServer(t *testing.T) {
 
 	go func() {
 		fID, _ = fCli.Who(context.Background(), &empty.Empty{})
+		wg.Done()
 	}()
 
 	go func() {
 		sID, _ = sCli.Who(context.Background(), &empty.Empty{})
+		wg.Done()
 	}()
 
 	go func() {
 		tID, _ = tCli.Who(context.Background(), &empty.Empty{})
+		wg.Done()
 	}()
 
 	wg.Wait()
