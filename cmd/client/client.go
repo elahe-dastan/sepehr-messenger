@@ -28,9 +28,9 @@ func Register(rootCmd *cobra.Command) {
 			if setID == -1 {
 				id, err = cli.Who(context.Background(), &empty.Empty{})
 				fmt.Println(id.Id)
-			}else {
+			} else {
 				id = &protocol.ID{
-					Id:                   setID,
+					Id: setID,
 				}
 			}
 
@@ -49,16 +49,18 @@ func Register(rootCmd *cobra.Command) {
 					log.Println(err)
 				}
 
-				cli.Send(context.Background(), &protocol.Data{
-					Id:                   id,
-					Text:                 text,
-				})
+				if _, err := cli.Send(context.Background(), &protocol.Data {
+					Id:   id,
+					Text: text,
+				}); err != nil {
+						log.Println(err)
+				}
 			}
 		},
 	}
 
-	c.Flags().StringP("server", "s", "127.0.0.1:1373","server address")
+	c.Flags().StringP("server", "s", "127.0.0.1:1373", "server address")
 	c.Flags().Int32P("ID", "i", -1, "client id")
 
-	rootCmd.AddCommand(&c,)
+	rootCmd.AddCommand(&c)
 }

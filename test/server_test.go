@@ -16,16 +16,20 @@ import (
 func TestServer(t *testing.T) {
 	// starting a server
 	c := config.Read()
-	s := server.ChatServer {
+	s := server.ChatServer{
 		Seq:    0,
 		Mutex:  sync.Mutex{},
 		Queues: make(map[int32]chan protocol.Data),
 	}
 
+	up := make(chan int)
 	go func() {
+		up <- 0
 		err := s.Start(c)
 		assert.NoError(t, err, "cannot start server")
 	}()
+
+	<-up
 
 	// New three clients
 	fCli, err := client.New("127.0.0.1:1373")
@@ -43,17 +47,20 @@ func TestServer(t *testing.T) {
 	var tID *protocol.ID
 
 	go func() {
-		fID, _ = fCli.Who(context.Background(), &empty.Empty{})
+		fID, err = fCli.Who(context.Background(), &empty.Empty{})
+		assert.NoError(t, err)
 		wg.Done()
 	}()
 
 	go func() {
-		sID, _ = sCli.Who(context.Background(), &empty.Empty{})
+		sID, err = sCli.Who(context.Background(), &empty.Empty{})
+		assert.NoError(t, err)
 		wg.Done()
 	}()
 
 	go func() {
-		tID, _ = tCli.Who(context.Background(), &empty.Empty{})
+		tID, err = tCli.Who(context.Background(), &empty.Empty{})
+		assert.NoError(t, err)
 		wg.Done()
 	}()
 
@@ -63,21 +70,22 @@ func TestServer(t *testing.T) {
 	assert.NotEqual(t, fID.Id, tID.Id)
 	assert.NotEqual(t, sID.Id, tID.Id)
 
-	fCli.Send(context.Background(), &protocol.Data {
-		Id:                   fID,
-		Text:                 "Hello from client one",
+	fCli.Send(context.Background(), &protocol.Data{
+		Id:   fID,
+		Text: "Hello from client one",
 	})
 
-	sCli.Send(context.Background(), &protocol.Data {
-		Id:                   sID,
-		Text:                 "Hello from client two",
+	sCli.Send(context.Background(), &protocol.Data{
+		Id:   sID,
+		Text: "Hello from client two",
 	})
 
-	tCli.Send(context.Background(), &protocol.Data {
-		Id:                   tID,
-		Text:                 "Hello from client three",
+	tCli.Send(context.Background(), &protocol.Data{
+		Id:   tID,
+		Text: "Hello from client three",
 	})
 
 	fChannel := s.Queues[fID.Id]
-	assert.Equal(t, "Hello from client two", <-fChannel)
+	data := <-fChannel
+	assert.Equal(t, "Hello from client two", data.Text)
 }

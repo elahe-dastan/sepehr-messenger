@@ -21,7 +21,9 @@ func New(addr string) (protocol.ChatClient, error) {
 	return protocol.NewChatClient(conn), nil
 }
 
-func Show(cli protocol.ChatClient, id *protocol.ID)  {
+func Show(cli protocol.ChatClient, id *protocol.ID) {
+	connPeriod := time.Duration(5)
+
 	for {
 		res, err := cli.Receive(context.Background(), id)
 
@@ -29,16 +31,16 @@ func Show(cli protocol.ChatClient, id *protocol.ID)  {
 			log.Println(err)
 		}
 
-		for  {
+		for {
 			m, err := res.Recv()
 
 			if err != nil {
 				break
 			}
 
-			fmt.Printf("id:%d > %s",m.Id.Id, m.Text)
+			fmt.Printf("id:%d > %s", m.Id.Id, m.Text)
 		}
 
-		<-time.Tick(time.Second * 5)
+		<-time.Tick(time.Second * connPeriod)
 	}
 }

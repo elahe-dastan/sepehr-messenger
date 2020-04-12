@@ -17,7 +17,7 @@ func Register(rootCmd *cobra.Command) {
 		Short: "Runs server",
 		Run: func(cmd *cobra.Command, args []string) {
 			c := config.Read()
-			s := server.ChatServer {
+			s := server.ChatServer{
 				Seq:    0,
 				Mutex:  sync.Mutex{},
 				Queues: make(map[int32]chan protocol.Data),
