@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const size  = 100 // This is the buffer size for each client's channel
+const size = 100 // This is the buffer size for each client's channel
 
 type ChatServer struct {
 	Seq    int32
@@ -39,10 +39,9 @@ func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty,
 }
 
 func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) error {
-	messages := s.Queues[id.Id]
 	const openConnTime = 5 * time.Second
 
-
+	messages := s.Queues[id.Id]
 
 	for {
 		ticker := time.NewTicker(openConnTime)
