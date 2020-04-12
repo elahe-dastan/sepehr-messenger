@@ -20,20 +20,12 @@ func Register(rootCmd *cobra.Command) {
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		Run: func(cmd *cobra.Command, args []string) {
-			//c, err := net.Dial("tcp", "localhost:1373")
-			//
-			//if err != nil {
-			//	log.Println(err)
-			//}
-
 			cli := client.New()
 			id, err := cli.Who(context.Background(), &empty.Empty{})
 
 			if err != nil {
 				log.Fatal(err)
 			}
-			//
-			//go cli.Show()
 
 			consoleReader := bufio.NewReader(os.Stdin)
 
@@ -58,7 +50,7 @@ func Register(rootCmd *cobra.Command) {
 							break
 						}
 
-						fmt.Println(m)
+						fmt.Printf("id:%d > %s",m.Id.Id, m.Text)
 					}
 
 				}else {

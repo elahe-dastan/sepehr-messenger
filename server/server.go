@@ -12,23 +12,13 @@ import (
 	"google.golang.org/grpc"
 )
 
-//type Server struct {
-//	clients []client.Client
-//	connReaders chan client.Client
-//}
-
-//func New() Server {
-//	return Server{clients:make([]client.Client, 0),
-//		connReaders:make(chan client.Client, 100)}
-//}
-
-type SimpleChat struct{
+type ChatServer struct{
 	seq    int32
 	mutex  sync.Mutex
 	queues map[int32]chan protocol.Data
 }
 
-func (s *SimpleChat) Send(c context.Context, data *protocol.Data) (*empty.Empty, error) {
+func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty, error) {
 	for id, ch := range s.queues {
 		if id == data.Id.Id {
 			continue
@@ -44,11 +34,12 @@ func (s *SimpleChat) Send(c context.Context, data *protocol.Data) (*empty.Empty,
 	return &empty.Empty{}, nil
 }
 
-func (s *SimpleChat) Receive(id *protocol.ID, con protocol.SimpleChat_ReceiveServer) error {
+func (s *ChatServer) Receive(id *protocol.ID, con protocol.SimpleChat_ReceiveServer) error {
 	messages := s.queues[id.Id]
 
 	for {
-		tick := time.Tick(time.Minute * 5)
+		tick := time.Tick(time.Second * 10)
+
 
 		select {
 		case message := <-messages:
@@ -56,14 +47,12 @@ func (s *SimpleChat) Receive(id *protocol.ID, con protocol.SimpleChat_ReceiveSer
 				log.Println(err)
 			}
 		case <-tick :
-			break
+			return nil
 		}
 	}
-
-	return nil
 }
 
-func (s *SimpleChat) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
+func (s *ChatServer) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	s.seq++
@@ -81,44 +70,10 @@ func Start()  {
 	}
 
 	grpcServer := grpc.NewServer()
-	protocol.RegisterSimpleChatServer(grpcServer, &SimpleChat{
+	protocol.RegisterSimpleChatServer(grpcServer, &ChatServer{
 		seq:    0,
 		mutex:  sync.Mutex{},
 		queues: make(map[int32]chan protocol.Data),
 	})
 	grpcServer.Serve(l)
-
-	//go s.accept(l)
-	//
-	//for {
-	//	r := <-s.connReaders
-	//	go s.Handler(r)
-	//}
 }
-
-//func (s *Server) accept(l net.Listener)  {
-//	for {
-//		c, err := l.Accept()
-//		if err != nil {
-//			log.Println(err)
-//		}
-//
-//		cli := client.New(c)
-//		s.clients = append(s.clients, cli)
-//		s.connReaders<- cli
-//	}
-//}
-
-//func (s *Server) Handler(r client.Client)  {
-//	netData, err := r.Reader.ReadString('\n')
-//
-//	if err != nil {
-//		log.Println(err)
-//	}
-//
-//	for _, cli := range s.clients {
-//		if r != cli {
-//			cli.Send(netData)
-//		}
-//	}
-//}
