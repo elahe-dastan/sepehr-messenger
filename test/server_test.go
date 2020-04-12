@@ -23,8 +23,10 @@ func TestServer(t *testing.T) {
 	}
 
 	up := make(chan int)
+
 	go func() {
 		up <- 0
+
 		err := s.Start(c)
 		assert.NoError(t, err, "cannot start server")
 	}()
@@ -40,10 +42,13 @@ func TestServer(t *testing.T) {
 	assert.NoError(t, err, "cannot initiate client")
 
 	var wg sync.WaitGroup
+
 	wg.Add(3)
 
 	var fID *protocol.ID
+
 	var sID *protocol.ID
+
 	var tID *protocol.ID
 
 	go func() {

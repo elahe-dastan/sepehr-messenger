@@ -38,17 +38,17 @@ func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty,
 
 func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) error {
 	messages := s.Queues[id.Id]
-	openConnTime := time.Duration(5)
+	openConnTime := 5 * time.Second
+	ticker := time.NewTicker(openConnTime)
+	defer ticker.Stop()
 
 	for {
-		tick := time.Tick(time.Second * openConnTime)
-
 		select {
 		case message := <-messages:
 			if err := con.Send(&message); err != nil {
 				log.Println(err)
 			}
-		case <-tick:
+		case <-ticker.C:
 			return nil
 		}
 	}
@@ -58,7 +58,8 @@ func (s *ChatServer) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 	s.Seq++
-	s.Queues[s.Seq] = make(chan protocol.Data, 100)
+	chanSize := 100
+	s.Queues[s.Seq] = make(chan protocol.Data, chanSize)
 
 	return &protocol.ID{
 		Id: s.Seq,

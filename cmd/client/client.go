@@ -49,11 +49,11 @@ func Register(rootCmd *cobra.Command) {
 					log.Println(err)
 				}
 
-				if _, err := cli.Send(context.Background(), &protocol.Data {
+				if _, err := cli.Send(context.Background(), &protocol.Data{
 					Id:   id,
 					Text: text,
 				}); err != nil {
-						log.Println(err)
+					log.Println(err)
 				}
 			}
 		},

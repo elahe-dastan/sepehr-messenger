@@ -19,7 +19,7 @@ func Read() Config {
 	var k = koanf.New(".")
 
 	if err := k.Load(structs.Provider(Default(), "koanf"), nil); err != nil {
-		log.Fatal("error loading config: %v", err)
+		log.Fatalf("error loading config: %v", err)
 	}
 
 	if err := k.Load(file.Provider("config.yml"), yaml.Parser()); err != nil {
@@ -38,7 +38,7 @@ func Read() Config {
 	var c Config
 
 	if err := k.Unmarshal("", &c); err != nil {
-		log.Fatal("error unmarshalling config: %s", err)
+		log.Fatalf("error unmarshalling config: %s", err)
 	}
 
 	return c
