@@ -11,8 +11,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-func New() protocol.ChatClient {
-	conn, err := grpc.Dial("localhost:1373", grpc.WithInsecure())
+func New(addr string) protocol.ChatClient {
+	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 
 	if err != nil {
 		log.Println(err)

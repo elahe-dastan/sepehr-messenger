@@ -19,8 +19,19 @@ func Register(rootCmd *cobra.Command) {
 		Use:   "client",
 		Short: "Runs client",
 		Run: func(cmd *cobra.Command, args []string) {
-			cli := client.New()
-			id, err := cli.Who(context.Background(), &empty.Empty{})
+			addr, err := cmd.Flags().GetString("server")
+			cli := client.New(addr)
+
+			var id *protocol.ID
+			setID, err := cmd.Flags().GetInt32("ID")
+
+			if setID == -1 {
+				id, err = cli.Who(context.Background(), &empty.Empty{})
+			}else {
+				id = &protocol.ID{
+					Id:                   setID,
+				}
+			}
 
 			if err != nil {
 				log.Fatal(err)
@@ -46,5 +57,7 @@ func Register(rootCmd *cobra.Command) {
 	}
 
 	c.Flags().StringP("server", "s", "127.0.0.1:1373","server address")
+	c.Flags().Int32P("ID", "i", -1, "client id")
+
 	rootCmd.AddCommand(&c,)
 }
