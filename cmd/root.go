@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"alibaba/cmd/client"
-	"alibaba/cmd/server"
 	"fmt"
 	"os"
+
+	"github.com/elahe-dastan/interview/cmd/client"
+	"github.com/elahe-dastan/interview/cmd/server"
 
 	"github.com/spf13/cobra"
 )

@@ -1,8 +1,10 @@
 syntax = "proto3";
 
+package protocol;
+
 import "google/protobuf/empty.proto";
 
-service SimpleChat {
+service Chat {
     rpc Send(Data) returns (google.protobuf.Empty) {}
     rpc Receive(ID) returns (stream Data) {}
     rpc Who(google.protobuf.Empty) returns (ID) {}

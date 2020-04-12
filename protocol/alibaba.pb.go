@@ -112,8 +112,8 @@ func (m *Data) GetText() string {
 }
 
 func init() {
-	proto.RegisterType((*ID)(nil), "ID")
-	proto.RegisterType((*Data)(nil), "Data")
+	proto.RegisterType((*ID)(nil), "protocol.ID")
+	proto.RegisterType((*Data)(nil), "protocol.Data")
 }
 
 func init() {
@@ -121,20 +121,21 @@ func init() {
 }
 
 var fileDescriptor_41e0adaa29d5f671 = []byte{
-	// 200 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x8e, 0xbf, 0x4f, 0x85, 0x30,
-	0x10, 0xc7, 0x69, 0x01, 0x8d, 0x67, 0x74, 0x38, 0x8d, 0xc1, 0xba, 0x90, 0xc6, 0x44, 0xa6, 0x62,
-	0xf0, 0x4f, 0x10, 0x07, 0x56, 0x18, 0x9c, 0x5b, 0x39, 0xa1, 0x09, 0x58, 0x62, 0x2a, 0xd1, 0xff,
-	0xde, 0x14, 0xf2, 0xde, 0xf6, 0xb6, 0xbb, 0xef, 0xaf, 0x7c, 0xe0, 0x4a, 0x4f, 0xd6, 0x68, 0xa3,
-	0xd5, 0xf2, 0xed, 0xbc, 0x13, 0x0f, 0x83, 0x73, 0xc3, 0x44, 0xe5, 0xf6, 0x99, 0x9f, 0xcf, 0x92,
-	0xe6, 0xc5, 0xff, 0xed, 0xa6, 0xbc, 0x05, 0xde, 0xd4, 0x78, 0x0d, 0xdc, 0xf6, 0x19, 0xcb, 0x59,
-	0x91, 0xb6, 0xdc, 0xf6, 0xb2, 0x84, 0xa4, 0xd6, 0x5e, 0xe3, 0xcd, 0x51, 0xbf, 0xac, 0x62, 0xd5,
-	0xd4, 0xc1, 0x44, 0x84, 0xc4, 0xd3, 0xaf, 0xcf, 0x78, 0xce, 0x8a, 0x8b, 0x76, 0xbb, 0xab, 0x15,
-	0xa0, 0xb3, 0xf3, 0x32, 0xd1, 0xeb, 0xa8, 0x3d, 0x3e, 0x41, 0xd2, 0xd1, 0x57, 0x8f, 0xa9, 0x0a,
-	0x2b, 0xe2, 0x4e, 0xed, 0x04, 0xea, 0x40, 0xa0, 0xde, 0x02, 0x81, 0x8c, 0xf0, 0x1e, 0xce, 0x5b,
-	0xfa, 0x20, 0xbb, 0x12, 0x86, 0x79, 0xb1, 0x17, 0x64, 0xf4, 0xcc, 0xf0, 0x11, 0xe2, 0xf7, 0xd1,
-	0xe1, 0x89, 0xae, 0x08, 0x71, 0x19, 0x99, 0xb3, 0x4d, 0x7e, 0xf9, 0x0f, 0x00, 0x00, 0xff, 0xff,
-	0xd4, 0x97, 0x36, 0xbb, 0xf3, 0x00, 0x00, 0x00,
+	// 209 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0xcc, 0xc9, 0x4c,
+	0x4a, 0x4c, 0x4a, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x00, 0x53, 0xc9, 0xf9, 0x39,
+	0x52, 0xd2, 0xe9, 0xf9, 0xf9, 0xe9, 0x39, 0xa9, 0xfa, 0x60, 0x81, 0xa4, 0xd2, 0x34, 0xfd, 0xd4,
+	0xdc, 0x82, 0x92, 0x4a, 0x88, 0x32, 0x25, 0x11, 0x2e, 0x26, 0x4f, 0x17, 0x21, 0x3e, 0x2e, 0xa6,
+	0xcc, 0x14, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xd6, 0x20, 0xa6, 0xcc, 0x14, 0x25, 0x0b, 0x2e, 0x16,
+	0x97, 0xc4, 0x92, 0x44, 0x21, 0x19, 0xb8, 0x38, 0xb7, 0x11, 0x8f, 0x1e, 0xcc, 0x44, 0x3d, 0x4f,
+	0x17, 0x90, 0x2a, 0x21, 0x21, 0x2e, 0x96, 0x92, 0xd4, 0x8a, 0x12, 0x09, 0x26, 0x05, 0x46, 0x0d,
+	0xce, 0x20, 0x30, 0xdb, 0x68, 0x0a, 0x23, 0x17, 0x8b, 0x73, 0x46, 0x62, 0x89, 0x90, 0x01, 0x17,
+	0x4b, 0x70, 0x6a, 0x5e, 0x8a, 0x10, 0x1f, 0x42, 0x1b, 0xc8, 0x48, 0x29, 0x31, 0x3d, 0x88, 0x73,
+	0xf4, 0x60, 0xce, 0xd1, 0x73, 0x05, 0x39, 0x47, 0x89, 0x41, 0x48, 0x9b, 0x8b, 0x3d, 0x28, 0x35,
+	0x39, 0x35, 0xb3, 0x2c, 0x55, 0x08, 0xc5, 0x2e, 0x29, 0x34, 0x23, 0x94, 0x18, 0x0c, 0x18, 0x85,
+	0x74, 0xb9, 0x98, 0xc3, 0x33, 0xf2, 0x85, 0x70, 0x98, 0x26, 0x85, 0x62, 0x80, 0x12, 0x43, 0x12,
+	0x1b, 0x98, 0x6b, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0xda, 0x5a, 0x0a, 0xc8, 0x25, 0x01, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -142,41 +143,41 @@ var _ context.Context
 var _ grpc.ClientConnInterface
 
 // This is a compile-time assertion to ensure that this generated file
-// is compatible with the protocol package it is being compiled against.
+// is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// SimpleChatClient is the client API for SimpleChat service.
+// ChatClient is the client API for Chat service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type SimpleChatClient interface {
+type ChatClient interface {
 	Send(ctx context.Context, in *Data, opts ...grpc.CallOption) (*empty.Empty, error)
-	Receive(ctx context.Context, in *ID, opts ...grpc.CallOption) (SimpleChat_ReceiveClient, error)
+	Receive(ctx context.Context, in *ID, opts ...grpc.CallOption) (Chat_ReceiveClient, error)
 	Who(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ID, error)
 }
 
-type simpleChatClient struct {
+type chatClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSimpleChatClient(cc grpc.ClientConnInterface) SimpleChatClient {
-	return &simpleChatClient{cc}
+func NewChatClient(cc grpc.ClientConnInterface) ChatClient {
+	return &chatClient{cc}
 }
 
-func (c *simpleChatClient) Send(ctx context.Context, in *Data, opts ...grpc.CallOption) (*empty.Empty, error) {
+func (c *chatClient) Send(ctx context.Context, in *Data, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/SimpleChat/Send", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/protocol.Chat/Send", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *simpleChatClient) Receive(ctx context.Context, in *ID, opts ...grpc.CallOption) (SimpleChat_ReceiveClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_SimpleChat_serviceDesc.Streams[0], "/SimpleChat/Receive", opts...)
+func (c *chatClient) Receive(ctx context.Context, in *ID, opts ...grpc.CallOption) (Chat_ReceiveClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Chat_serviceDesc.Streams[0], "/protocol.Chat/Receive", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &simpleChatReceiveClient{stream}
+	x := &chatReceiveClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -186,16 +187,16 @@ func (c *simpleChatClient) Receive(ctx context.Context, in *ID, opts ...grpc.Cal
 	return x, nil
 }
 
-type SimpleChat_ReceiveClient interface {
+type Chat_ReceiveClient interface {
 	Recv() (*Data, error)
 	grpc.ClientStream
 }
 
-type simpleChatReceiveClient struct {
+type chatReceiveClient struct {
 	grpc.ClientStream
 }
 
-func (x *simpleChatReceiveClient) Recv() (*Data, error) {
+func (x *chatReceiveClient) Recv() (*Data, error) {
 	m := new(Data)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -203,114 +204,114 @@ func (x *simpleChatReceiveClient) Recv() (*Data, error) {
 	return m, nil
 }
 
-func (c *simpleChatClient) Who(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ID, error) {
+func (c *chatClient) Who(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ID, error) {
 	out := new(ID)
-	err := c.cc.Invoke(ctx, "/SimpleChat/Who", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/protocol.Chat/Who", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SimpleChatServer is the server API for SimpleChat service.
-type SimpleChatServer interface {
+// ChatServer is the server API for Chat service.
+type ChatServer interface {
 	Send(context.Context, *Data) (*empty.Empty, error)
-	Receive(*ID, SimpleChat_ReceiveServer) error
+	Receive(*ID, Chat_ReceiveServer) error
 	Who(context.Context, *empty.Empty) (*ID, error)
 }
 
-// UnimplementedSimpleChatServer can be embedded to have forward compatible implementations.
-type UnimplementedSimpleChatServer struct {
+// UnimplementedChatServer can be embedded to have forward compatible implementations.
+type UnimplementedChatServer struct {
 }
 
-func (*UnimplementedSimpleChatServer) Send(ctx context.Context, req *Data) (*empty.Empty, error) {
+func (*UnimplementedChatServer) Send(ctx context.Context, req *Data) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
 }
-func (*UnimplementedSimpleChatServer) Receive(req *ID, srv SimpleChat_ReceiveServer) error {
+func (*UnimplementedChatServer) Receive(req *ID, srv Chat_ReceiveServer) error {
 	return status.Errorf(codes.Unimplemented, "method Receive not implemented")
 }
-func (*UnimplementedSimpleChatServer) Who(ctx context.Context, req *empty.Empty) (*ID, error) {
+func (*UnimplementedChatServer) Who(ctx context.Context, req *empty.Empty) (*ID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Who not implemented")
 }
 
-func RegisterSimpleChatServer(s *grpc.Server, srv SimpleChatServer) {
-	s.RegisterService(&_SimpleChat_serviceDesc, srv)
+func RegisterChatServer(s *grpc.Server, srv ChatServer) {
+	s.RegisterService(&_Chat_serviceDesc, srv)
 }
 
-func _SimpleChat_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Chat_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Data)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SimpleChatServer).Send(ctx, in)
+		return srv.(ChatServer).Send(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/SimpleChat/Send",
+		FullMethod: "/protocol.Chat/Send",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SimpleChatServer).Send(ctx, req.(*Data))
+		return srv.(ChatServer).Send(ctx, req.(*Data))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SimpleChat_Receive_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _Chat_Receive_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ID)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(SimpleChatServer).Receive(m, &simpleChatReceiveServer{stream})
+	return srv.(ChatServer).Receive(m, &chatReceiveServer{stream})
 }
 
-type SimpleChat_ReceiveServer interface {
+type Chat_ReceiveServer interface {
 	Send(*Data) error
 	grpc.ServerStream
 }
 
-type simpleChatReceiveServer struct {
+type chatReceiveServer struct {
 	grpc.ServerStream
 }
 
-func (x *simpleChatReceiveServer) Send(m *Data) error {
+func (x *chatReceiveServer) Send(m *Data) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _SimpleChat_Who_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Chat_Who_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(empty.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SimpleChatServer).Who(ctx, in)
+		return srv.(ChatServer).Who(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/SimpleChat/Who",
+		FullMethod: "/protocol.Chat/Who",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SimpleChatServer).Who(ctx, req.(*empty.Empty))
+		return srv.(ChatServer).Who(ctx, req.(*empty.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _SimpleChat_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "SimpleChat",
-	HandlerType: (*SimpleChatServer)(nil),
+var _Chat_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "protocol.Chat",
+	HandlerType: (*ChatServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Send",
-			Handler:    _SimpleChat_Send_Handler,
+			Handler:    _Chat_Send_Handler,
 		},
 		{
 			MethodName: "Who",
-			Handler:    _SimpleChat_Who_Handler,
+			Handler:    _Chat_Who_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Receive",
-			Handler:       _SimpleChat_Receive_Handler,
+			Handler:       _Chat_Receive_Handler,
 			ServerStreams: true,
 		},
 	},

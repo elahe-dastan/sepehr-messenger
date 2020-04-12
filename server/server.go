@@ -1,12 +1,14 @@
 package server
 
 import (
-	"alibaba/protocol"
 	"context"
 	"log"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/elahe-dastan/interview/config"
+	"github.com/elahe-dastan/interview/protocol"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
@@ -34,7 +36,7 @@ func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty,
 	return &empty.Empty{}, nil
 }
 
-func (s *ChatServer) Receive(id *protocol.ID, con protocol.SimpleChat_ReceiveServer) error {
+func (s *ChatServer) Receive(id *protocol.ID, con protocol.Chat_ReceiveServer) error {
 	messages := s.queues[id.Id]
 
 	for {
@@ -62,15 +64,15 @@ func (s *ChatServer) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
 	}, nil
 }
 
-func Start()  {
-	l, err := net.Listen("tcp",":1373")
+func Start(c config.Config)  {
+	l, err := net.Listen("tcp", c.Address)
 
 	if err != nil {
 		log.Println(err)
 	}
 
 	grpcServer := grpc.NewServer()
-	protocol.RegisterSimpleChatServer(grpcServer, &ChatServer{
+	protocol.RegisterChatServer(grpcServer, &ChatServer{
 		seq:    0,
 		mutex:  sync.Mutex{},
 		queues: make(map[int32]chan protocol.Data),

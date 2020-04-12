@@ -1,24 +1,23 @@
 package client
 
 import (
-	"alibaba/client"
-	"alibaba/protocol"
 	"bufio"
 	"context"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/elahe-dastan/interview/client"
+	"github.com/elahe-dastan/interview/protocol"
+
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/spf13/cobra"
 )
 
 func Register(rootCmd *cobra.Command) {
-	rootCmd.AddCommand(&cobra.Command{
+	c := cobra.Command{
 		Use:   "client",
-		Short: "A brief description of your application",
-		// Uncomment the following line if your bare application
-		// has an action associated with it:
+		Short: "Runs client",
 		Run: func(cmd *cobra.Command, args []string) {
 			cli := client.New()
 			id, err := cli.Who(context.Background(), &empty.Empty{})
@@ -61,6 +60,8 @@ func Register(rootCmd *cobra.Command) {
 				}
 			}
 		},
-	},
-	)
+	}
+
+	c.Flags().StringP("server", "s", "127.0.0.1:1373","server address")
+	rootCmd.AddCommand(&c,)
 }

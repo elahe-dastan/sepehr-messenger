@@ -1,7 +1,8 @@
 package server
 
 import (
-	"alibaba/server"
+	"github.com/elahe-dastan/interview/config"
+	"github.com/elahe-dastan/interview/server"
 
 	"github.com/spf13/cobra"
 )
@@ -9,11 +10,10 @@ import (
 func Register(rootCmd *cobra.Command) {
 	rootCmd.AddCommand(&cobra.Command{
 		Use:   "server",
-		Short: "A brief description of your application",
-		// Uncomment the following line if your bare application
-		// has an action associated with it:
+		Short: "Runs server",
 		Run: func(cmd *cobra.Command, args []string) {
-			server.Start()
+			c := config.Read()
+			server.Start(c)
 		},
 	},
 	)
