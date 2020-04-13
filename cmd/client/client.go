@@ -7,52 +7,54 @@ import (
 	"log"
 	"os"
 
-	"github.com/elahe-dastan/interview/client"
-	"github.com/elahe-dastan/interview/protocol"
+	"github.com/elahe-dastan/gossip/client"
+	"github.com/elahe-dastan/gossip/protocol"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/spf13/cobra"
 )
 
 func Register(rootCmd *cobra.Command) {
-	c := cobra.Command{
+	c := &cobra.Command{
 		Use:   "client",
 		Short: "Runs client",
 		Run: func(cmd *cobra.Command, args []string) {
 			addr, err := cmd.Flags().GetString("server")
-			cli, e := client.New(addr)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-			if e != nil {
-				log.Fatal(e)
+			cli, err := client.New(addr)
+			if err != nil {
+				log.Fatal(err)
 			}
 
 			var id *protocol.ID
-			setID, flagErr := cmd.Flags().GetInt32("ID")
 
-			if flagErr != nil {
-				log.Fatal(flagErr)
+			setID, err := cmd.Flags().GetInt32("ID")
+			if err != nil {
+				log.Fatal(err)
 			}
 
 			if setID == -1 {
 				id, err = cli.Who(context.Background(), &empty.Empty{})
-				fmt.Println(id.Id)
+				if err != nil {
+					log.Fatal(err)
+				}
 			} else {
 				id = &protocol.ID{
 					Id: setID,
 				}
 			}
+			fmt.Println(id.Id)
 
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			consoleReader := bufio.NewReader(os.Stdin)
+			reader := bufio.NewReader(os.Stdin)
 
 			go client.Show(cli, id)
 
 			for {
 				fmt.Print(" >> ")
-				text, err := consoleReader.ReadString('\n')
+				text, err := reader.ReadString('\n')
 				if err != nil {
 					log.Println(err)
 				}
@@ -70,5 +72,5 @@ func Register(rootCmd *cobra.Command) {
 	c.Flags().StringP("server", "s", "127.0.0.1:1373", "server address")
 	c.Flags().Int32P("ID", "i", -1, "client id")
 
-	rootCmd.AddCommand(&c)
+	rootCmd.AddCommand(c)
 }

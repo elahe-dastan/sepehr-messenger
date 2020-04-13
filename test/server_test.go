@@ -5,10 +5,10 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/elahe-dastan/interview/client"
-	"github.com/elahe-dastan/interview/config"
-	"github.com/elahe-dastan/interview/protocol"
-	"github.com/elahe-dastan/interview/server"
+	"github.com/elahe-dastan/gossip/client"
+	"github.com/elahe-dastan/gossip/config"
+	"github.com/elahe-dastan/gossip/protocol"
+	"github.com/elahe-dastan/gossip/server"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,11 +17,7 @@ import (
 func TestServer(t *testing.T) {
 	// starting a server
 	c := config.Read()
-	s := server.ChatServer{
-		Seq:    0,
-		Mutex:  sync.Mutex{},
-		Queues: make(map[int32]chan protocol.Data),
-	}
+	s := server.NewChatServer()
 
 	up := make(chan int)
 

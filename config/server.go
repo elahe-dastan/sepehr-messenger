@@ -26,7 +26,7 @@ func Read() Config {
 		log.Println("No config file provided")
 	}
 
-	const Prefix = "alibaba_"
+	const Prefix = "gossip_"
 
 	if err := k.Load(env.Provider(Prefix, ".", func(s string) string {
 		return strings.Replace(strings.ToLower(

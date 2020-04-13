@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/elahe-dastan/interview/config"
-	"github.com/elahe-dastan/interview/protocol"
+	"github.com/elahe-dastan/gossip/config"
+	"github.com/elahe-dastan/gossip/protocol"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
@@ -20,6 +20,14 @@ type ChatServer struct {
 	Seq    int32
 	Mutex  sync.Mutex
 	Queues map[int32]chan protocol.Data
+}
+
+func NewChatServer() *ChatServer {
+	return &ChatServer{
+		Seq:    0,
+		Mutex:  sync.Mutex{},
+		Queues: make(map[int32]chan protocol.Data),
+	}
 }
 
 func (s *ChatServer) Send(c context.Context, data *protocol.Data) (*empty.Empty, error) {
@@ -70,17 +78,12 @@ func (s *ChatServer) Who(context.Context, *empty.Empty) (*protocol.ID, error) {
 
 func (s *ChatServer) Start(c config.Config) error {
 	l, err := net.Listen("tcp", c.Address)
-
 	if err != nil {
 		return err
 	}
 
-	grpcServer := grpc.NewServer()
-	protocol.RegisterChatServer(grpcServer, s)
+	server := grpc.NewServer()
+	protocol.RegisterChatServer(server, s)
 
-	if err := grpcServer.Serve(l); err != nil {
-		return err
-	}
-
-	return nil
+	return server.Serve(l)
 }

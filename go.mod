@@ -1,4 +1,4 @@
-module github.com/elahe-dastan/interview
+module github.com/elahe-dastan/gossip
 
 go 1.13
 
