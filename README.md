@@ -1,4 +1,10 @@
 [![Drone (cloud)](https://img.shields.io/drone/build/elahe-dastan/gossip.svg?style=flat-square)](https://cloud.drone.io/elahe-dastan/gossip)
+
+![](image/khalse.jpeg)
+
+یه پیام دارم برای علی بابای عزیز
+
+.....
 # Simple chat server 
 
 In this project I implemented a vary simple chat server using golang in which each client writes a message and the
